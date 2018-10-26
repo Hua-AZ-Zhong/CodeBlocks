@@ -48,3 +48,11 @@ remote: Resolving deltas: 100% (1/1), completed with 1 local object.
 To https://github.com/Hua-AZ-Zhong/CodeBlocks.git
    7e69041..f99eedb  master -> master
 Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+
+
+# Problem encountered
+## No.1 You've successfully authenticated, but GitHub does not provide shell access.
+
+## No.2 Could not open a connection to your authentication agent.
+What I do: use command "ssh-agent bash"
