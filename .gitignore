@@ -7,3 +7,4 @@ test.cxx
 a.out
 *.swp
 .DS_Store
+*.class
