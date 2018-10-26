@@ -49,6 +49,9 @@ To https://github.com/Hua-AZ-Zhong/CodeBlocks.git
    7e69041..f99eedb  master -> master
 Branch 'master' set up to track remote branch 'master' from 'origin'.
 
+## Other command
+git checkout
+git pull
 
 ### Check if the ssh key is active
 Command: ssh -T git@github.com
