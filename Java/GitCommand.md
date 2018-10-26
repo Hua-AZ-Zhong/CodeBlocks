@@ -50,10 +50,39 @@ To https://github.com/Hua-AZ-Zhong/CodeBlocks.git
 Branch 'master' set up to track remote branch 'master' from 'origin'.
 
 
+### Check if the ssh key is active
+Command: ssh -T git@github.com
+oasisadm@oasisadm-virtual-machine:~/.ssh$ ssh -T git@github.com
+Hi Hua-AZ-Zhong! You've successfully authenticated, but GitHub does not provide shell access.
 
 # Problem encountered
 ## No.1 You've successfully authenticated, but GitHub does not provide shell access.
+What I do: Replace https mode to ssh mode
+1. git remote -v     to comfirm https is used.
+origin	https://github.com/Hua-AZ-Zhong/CodeBlocks.git (fetch)
+origin	https://github.com/Hua-AZ-Zhong/CodeBlocks.git (push
+2. git remote rm origin
+3. git remote add origin git@github.com:Hua-AZ-Zhong/CodeBlocks.git
+4. git remote -v
+origin	git@github.com:Hua-AZ-Zhong/CodeBlocks.git (fetch)
+origin	git@github.com:Hua-AZ-Zhong/CodeBlocks.git (push)
+5. update some file, git add/commit
+6. git push
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
 
-## No.2 Could not open a connection to your authentication agent.
+    git push --set-upstream origin master
+7.git push --set-upstream origin master
+oasisadm@oasisadm-virtual-machine:~/GitHub/Java$ git push --set-upstream origin master
+Counting objects: 4, done.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 445 bytes | 222.00 KiB/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To github.com:Hua-AZ-Zhong/CodeBlocks.git
+   f8a7758..fbbd814  master -> master
+
+
+## No.2 When execute "ssh-add ~/.ssh/id_rsa", occured "Could not open a connection to your authentication agent."
 What I do: use command "ssh-agent bash"
 2018年 10月 27日 星期六 00:16:27 CST
