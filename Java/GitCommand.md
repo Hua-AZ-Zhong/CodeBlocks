@@ -81,7 +81,7 @@ Total 4 (delta 2), reused 0 (delta 0)
 remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
 To github.com:Hua-AZ-Zhong/CodeBlocks.git
    f8a7758..fbbd814  master -> master
-
+8. update some file again, git push is okay.
 
 ## No.2 When execute "ssh-add ~/.ssh/id_rsa", occured "Could not open a connection to your authentication agent."
 What I do: use command "ssh-agent bash"
