@@ -2,6 +2,8 @@ public class Array{
 	public static void main(String args[]){
 		int array[] = new int[10];
 		for(int i=0;i<array.length;i++)
-			System.out.println("array[" + i +"] = " + array[1]);
+			array[i] = (i+1)*2 + 1;
+		for(int i=0;i<array.length;i++)
+			System.out.println("array[" + i +"] = " + array[i]);
 	}
 }
