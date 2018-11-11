@@ -176,3 +176,75 @@ zhonghua@ubuntu-s-1vcpu-1gb-nyc3-01:~$ /usr/local/lib/node_modules/gitbook-cli/b
 
 解决方法：
 sudo ln -s /usr/bin/nodejs /usr/bin/node
+
+
+
+
+
+## golang的搭建
+oasisadm@oasisadm-virtual-machine:~$ sudo snap install go
+[sudo] password for oasisadm: 
+error: This revision of snap "go" was published using classic confinement and thus may perform
+       arbitrary system changes outside of the security sandbox that snaps are usually confined to,
+       which may put your system at risk.
+
+       If you understand and want to proceed repeat the command including --classic.
+oasisadm@oasisadm-virtual-machine:~$ sudo snap install go --classic
+Download snap "go" (3039) from channel "stable"                                                                                                                                                       2% 36.2kB/s 37.1m
+
+
+Method 2
+sudo apt install golang-go
+
+oasisadm@oasisadm-virtual-machine:~$ sudo apt install golang-go
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  golang-1.10-go golang-1.10-race-detector-runtime golang-1.10-src golang-race-detector-runtime golang-src pkg-config
+Suggested packages:
+  bzr mercurial subversion
+The following NEW packages will be installed:
+  golang-1.10-go golang-1.10-race-detector-runtime golang-1.10-src golang-go golang-race-detector-runtime golang-src pkg-config
+0 upgraded, 7 newly installed, 0 to remove and 33 not upgraded.
+Need to get 40.3 MB of archives.
+After this operation, 225 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://cn.archive.ubuntu.com/ubuntu bionic-updates/main amd64 golang-1.10-src amd64 1.10.4-2ubuntu1~18.04.1 [11.1 MB]
+Get:2 http://cn.archive.ubuntu.com/ubuntu bionic-updates/main amd64 golang-1.10-go amd64 1.10.4-2ubuntu1~18.04.1 [28.6 MB]                                                                                            
+
+
+oasisadm@oasisadm-virtual-machine:~/moni$ go build .
+mm.go:9:3: cannot find package "github.com/radovskyb/watcher" in any of:
+	/usr/lib/go-1.10/src/github.com/radovskyb/watcher (from $GOROOT)
+	/home/oasisadm/go/src/github.com/radovskyb/watcher (from $GOPATH)
+
+
+oasisadm@oasisadm-virtual-machine:~/moni$ go get github.com/radovskyb/watcher
+# cd .; git clone https://github.com/radovskyb/watcher /home/oasisadm/go/src/github.com/radovskyb/watcher
+Cloning into '/home/oasisadm/go/src/github.com/radovskyb/watcher'...
+fatal: unable to access 'https://github.com/radovskyb/watcher/': Failed to connect to github.com port 443: Connection refused
+package github.com/radovskyb/watcher: exit status 128
+oasisadm@oasisadm-virtual-machine:~/moni$ go get github.com/radovskyb/watcher
+再次获取成功，目录在$HOME/go/src
+
+等同于
+仓库1：
+https://github.com/radovskyb/watcher 
+git clone https://github.com/radovskyb/watcher /home/oasisadm/go/src/github.com/radovskyb/watcher
+
+仓库1：
+https://github.com/fsnotify/fsnotify 
+git clone https://github.com/fsnotify/fsnotify /home/oasisadm/go/src/github.com/fsnotify/fsnotify
+
+oasisadm@oasisadm-virtual-machine:~/go/src/github.com$ go get github.com/fsnotify/fsnotify
+package golang.org/x/sys/unix: unrecognized import path "golang.org/x/sys/unix" (https fetch: Get https://golang.org/x/sys/unix?go-get=1: dial tcp 172.217.24.209:443: connect: connection refused)
+
+
+
+
+## 搭建apache服务器
+sudo apt install apache2-bin
+sudo apt install apache2
+sudo apt install subversion
+sudo apt-get install libapache2-svn 安装不了
