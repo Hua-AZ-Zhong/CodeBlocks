@@ -1,0 +1,59 @@
+1、复习：
+	条件变量（复杂的线程间同步pthread_cond_t/PTHREAD_COND_INITIALIZER/pthread_cond_init/pthread_cond_wait（wait前总是要先把互斥量加锁wait后再解锁）/pthread_cond_signal/pthread_cond_broadcast/pthread_cond_destroy）
+	网络基础：OSI，MAC，IP，AF，PORT，TCP/UDP，字节顺序，ip地址格式转换。
+	TCP通信：三次握手建立连接，服务器/客户端框架
+		int fd = socket(地址家族,传输协议,0)
+                    地址家族：AF_INET,AF_INET6,AF_LOCAL
+										传输协议：SOCK_STREAM/SOCK_DGRAM
+		一个tcp套接字就是一个文件描述符。
+		struct sockaddr_in s;
+		//struct sockaddr_in6 s;
+		//struct sockaddr_un s;
+		bind(fd, (struct sockaddr*)&s, sizeof(s));
+		listen(fd, n);
+		n表示允许同时有多少个连接请求在等待处理，不包括已经连接的。
+		struct sockaddr_in c;
+		socklen_t len=sizeof(c);
+		int newfd = accept(fd, (struct sockaddr*)&c, len);//NULL,NULL);
+		read/write(newfd,...);
+		close(newfd);
+
+《C++程序设计语言（特别版）》C++之父
+《C++编程思想》thinking in C++
+
+2、TCP客户端
+	int fd = socket(AF_INET,SOCK_STREAM,0);
+	struct sockaddr_in s;
+	connect(fd, (struct sockaddr*)&s, sizeof(s));成功0失败-1
+	反复read/write(fd,...)，跟服务器匹配，
+	close(fd);
+
+3、UDP通信：无连接，不可靠，类似短信
+    			服务器                      客户端
+		int s = socket(AF_INET,SOCK_DGRAM,0);
+		struct sockaddr_in si;//服务器
+		bind(s, (struct sockaddr*)&si, sizeof(si));//服务器
+		char msg[...];
+		struct sockaddr_in peer;//对方套接信息
+		socklen_t len=sizeof(peer);//套接信息长度
+		int n = recvfrom(s, msg, sizeof(msg), 0或者MSG_DONTWAIT, (struct sockaddr*)&peer, &len);//接收信息，返回收到的字节数，并在peer和len中填充对方（发送方）的套接信息及其长度
+		sendto(s, msg, bytes, 0, (struct sockaddr*)&peer, sizeof(peer));//发送数据到对方，返回发送的字节数。
+		close(s);
+4、本地套接字（了解）
+	AF_LOCAL//,AF_UNIX,AF_FILE
+	struct sockaddr_un{
+		sun_family;
+		sun_path[...];
+	};
+5、多路io：select
+	select(max+1,fd_set* set,NULL,NULL,timeval* timeout)在指定时间内检测文件描述符集set中的文件描述符（最大为max）对应的文件是否有数据可读，返回时set中只保留有数据可读的文件描述符，函数的返回值为可读的文件描述符的数量。如果timeout为NULL表示不考虑超时时间一直等到有文件描述符有数据可读了为止。
+       void FD_CLR(int fd, fd_set *set);从文件描述符集里去掉一个文件描述符
+       int  FD_ISSET(int fd, fd_set *set);检测一个文件描述符是否在文件描述符集里
+       void FD_SET(int fd, fd_set *set);添加一个文件描述符到文件描述符集里
+       void FD_ZERO(fd_set *set);清空文件描述符集
+						struct timeval {
+               long    tv_sec;         /* seconds */
+               long    tv_usec;        /* microseconds */
+           };
+6、网络聊天室
+
