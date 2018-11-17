@@ -1,0 +1,13 @@
+CXX = g++
+sList : list.o main.o insert.o display.o
+	$(CXX) -o sList main.o list.o insert.o display.o
+main.o : main.cpp list.h
+	$(CXX) -c main.cpp
+list.o : list.cpp list.h
+	$(CXX) -c list.cpp
+insert.o : insert.cpp list.h
+	$(CXX) -c insert.cpp
+display.o : display.cpp list.h
+	$(CXX) -c display.cpp
+clean:
+	rm -f *.o

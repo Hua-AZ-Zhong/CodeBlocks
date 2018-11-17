@@ -1,0 +1,17 @@
+#SET BIN PATH
+PATH=$PATH:$HOME/TestSourceCode/bin:$HOME/TestSourceCode/sbin:.; export PATH
+
+#SET LIBRARY PATH
+LIBRARY_PATH=$HOME/TestSourceCode/lib:.;export LIBRARY_PATH
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/TestSourceCode/lib:.; export LD_LIBRARY_PATH
+LIBPATH=$LD_LIBRARY_PATH
+
+#SET ALIAS
+alias cdm='cd ~/TestSourceCode'
+alias rmsp='find ~ -name ".*.*.sw*" | xargs rm -f'
+alias cdmnt='cd /mnt/hgfs'
+alias cdt='cd ~/TestSourceCode/test'
+alias cupovs='cd ~/dev761/boccupovsformatter_util-T76.0.12/src'
+alias 502='cd ~/dev761/boccupovsformatter_util-T76.0.502/src'
+alias cup='cd ~/dev761/boccupformatter_util-T76.0.15/src'
+alias SM4='cd ~/TestSourceCode/src/SM4'

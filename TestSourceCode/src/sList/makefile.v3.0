@@ -1,0 +1,21 @@
+CXX = g++
+ECHO = @echo
+RM = rm -f
+
+EXEC = sList 
+OBJS = \
+	list.o \
+	insert.o \
+	display.o \
+	main.o
+
+$(EXEC) : $(OBJS)
+	$(ECHO) "Linking EXE  [$(EXEC)] ..."
+	@$(CXX) -o $(EXEC) $(OBJS)
+
+.cpp.o:
+	$(ECHO) "Compiling [$@] ..."
+	@$(CXX) -o $@ -c $<
+
+clean:
+	$(RM) $(OBJS)

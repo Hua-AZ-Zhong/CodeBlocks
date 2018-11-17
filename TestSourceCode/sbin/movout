@@ -1,0 +1,24 @@
+#########################################################################
+# File Name: movout
+# Author: zhonghua
+# mail:   zhonghua-881008@163.com
+# Created Time: Sat 22 Mar 2014 04:15:56 PM CST
+#########################################################################
+#!/bin/bash
+cd $HOME/TestSourceCode
+find . -name "*.o" | xargs rm -f
+echo "已清除所有.o中间文件"
+find . -name ".*.*.sw*" | xargs rm -f
+echo "已清除.sw*备份文件"
+cd $HOME
+tar -cvf TestSourceCode_`date +%F_%H%M%S`_from_RH.tar TestSourceCode
+echo "打包成功"
+if [ -d /mnt/hgfs/tftpboot ]; then
+	cd /mnt/hgfs/tftpboot
+	if [ -f TestSourceCode_*.tar ]; then
+		rm -f TestSourceCode_*.tar
+		echo "已删除旧版本，即将用新版本替换"
+	fi
+	mv $HOME/TestSourceCode_*.tar /mnt/hgfs/tftpboot
+	echo "TAR包已移至tftpboot"
+fi
