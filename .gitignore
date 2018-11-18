@@ -1,5 +1,6 @@
 *.exe
 *.o
+*.so
 test.c
 test.cpp
 test.cxx
