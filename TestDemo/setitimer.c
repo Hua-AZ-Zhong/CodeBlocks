@@ -2,14 +2,8 @@
 #include <signal.h>
 #include <sys/time.h>
  
-void signalHandler(int signo)
-{
-	switch (signo){
-		case SIGALRM:
-			printf("Caught the SIGALRM signal!\n");
-			break;
-	}
-}
+void catch_all_signal();
+void signalHandler(int signo);
  
 int main(int argc, char *argv[])
 {
@@ -42,6 +36,8 @@ void catch_all_signal()
    signal(SIGIO, signalHandler); // Signal 23 - I/O possible, or completed
    signal(SIGSEGV, signalHandler); // Signal 11 - Core Dump
    signal(SIGTERM, signalHandler); // Signal 15 - Software terminate
+   signal(SIGURG, signalHandler); // Signal - Software terminate
+   signal(SIGALRM, signalHandler);
 
    #if 0
    for(int i=1; i <= 49 ; i++)
@@ -50,4 +46,16 @@ void catch_all_signal()
    }
    #endif
 
+}
+
+void signalHandler(int signo)
+{
+	switch (signo){
+		case SIGALRM:
+			printf("Caught the SIGALRM signal!\n");
+			break;
+		default:
+			printf("Caugth the signal [%d]\n", signo);
+			break;
+	}
 }
