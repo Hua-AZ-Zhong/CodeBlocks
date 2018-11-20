@@ -1,7 +1,8 @@
 ## How to use git command in Ubuntu/Other Terminal
 
 ### Clone a repository
-> git clone https://github.com/Hua-AZ-Zhong/CodeBlocks.git GitHub/CodeBlocks
+HTTPS: git clone https://github.com/Hua-AZ-Zhong/CodeBlocks.git GitHub/CodeBlocks
+SSH:   git clone git@github.com:Hua-AZ-Zhong/CodeBlocks.git GitHub/CodeBlocks
 
 ### Commit changes
 What I do in ubuntu command line:
