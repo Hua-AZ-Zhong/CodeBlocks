@@ -137,16 +137,16 @@ class Link {  // 负责链表的操作
 	}
 }
 interface Pet {  // 定义宠物接口
-	public String getName() ;
-	public String getColor() ;
-	public int getAge() ;
+	String getName() ;
+	String getColor() ;
+	int getAge() ;
 }
 class PetShop {
 	private Link pets = new Link() ;  // 开辟一个链表，保存多个宠物
 	public void add(Pet pet) {  // 上架宠物
 		this.pets.add(pet) ;
 	}
-	public void remove(Pet pet) {  // 下架宠物
+	public void delete(Pet pet) {  // 下架宠物
 		this.pets.remove(pet) ;
 	}
 	public Link getPets() {  // 取得全部宠物
@@ -245,6 +245,15 @@ public class PetShopDemo {
 		shop.add(new Cat("波斯猫",2,"白色"));
 		Link all = shop.search("金") ;
 		Object[] data = all.toArray() ;
+		System.out.println("【查询结果个数】：" + data.length);
+		for(int x = 0 ; x < data.length ; x++) {
+			System.out.println(data[x]) ;
+		}
+		System.out.println();
+		shop.delete(new Dog("金毛",2,"棕色"));
+		all = shop.search("金") ;
+		data = all.toArray() ;
+		System.out.println("【查询结果个数】：" + data.length);
 		for(int x = 0 ; x < data.length ; x++) {
 			System.out.println(data[x]) ;
 		}
