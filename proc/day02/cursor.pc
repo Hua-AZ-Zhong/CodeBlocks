@@ -1,0 +1,25 @@
+#include  <stdio.h>
+exec sql  include  sqlca;
+int main(){
+    exec sql  begin  declare section;
+        char  userpwd[30]="openlab/open123";
+        struct{
+            int  id;
+            char name[30];
+            double salary;    
+        }emp;    
+    exec sql  end    declare section; 
+    exec sql  connect:userpwd;
+    exec sql  declare  empscursor cursor for
+    select id,first_name,salary from s_emp 
+    order by  id;
+    exec sql  open    empscursor;
+    exec sql  fetch  empscursor into :emp;
+    printf("%d:%s:%lf\n",emp.id,
+        emp.name,emp.salary);
+    exec sql  fetch  empscursor into :emp;
+    printf("%d:%s:%lf\n",emp.id,
+        emp.name,emp.salary);
+    exec sql  close  empscursor;
+}
+

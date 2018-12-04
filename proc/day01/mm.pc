@@ -1,0 +1,13 @@
+#include <stdio.h>
+exec sql  include sqlca;
+
+int main(){
+    exec sql  begin declare section;
+        char  userpwd[30]="openlab/open123";   
+        
+    exec sql  end   declare section;
+    exec sql connect:userpwd;
+    
+    exec sql  commit work release; 
+}
+

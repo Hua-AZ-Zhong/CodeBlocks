@@ -1,0 +1,22 @@
+#include <stdio.h>
+exec sql  include sqlca;
+
+int main(){
+    exec sql  begin declare section;
+        char  userpwd[30]="openlab/open123";   
+        int   id=10086;
+        char  name[30]="qiangge";      
+    exec sql  end   declare section;
+    exec sql connect:userpwd;
+    /*creat  a  table*/
+    exec sql  create table  testproc(id  number,
+    name   varchar2(30));
+    /*insert  data  to  table*/
+    exec sql  insert into testproc  
+        values(1,'baoge');
+    exec sql  insert  into testproc
+        values(:id,:name);
+    exec sql commit;        
+    exec sql  commit work release; 
+}
+

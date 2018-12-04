@@ -1,0 +1,282 @@
+ pro  程序
+         通过在过程化的编程语言中嵌入sql语句开发出的应用程序叫pro
+ 程序。
+          
+ proc 程序
+          在c语言中嵌入sql语句开发出的应用程序 叫  proc程序。
+
+ 宿主语言                           sql是个寄生虫
+  
+ 为什么？
+ 目的：使用c或者c++   成为访问数据库的工具
+
+
+ proc中的语法
+ 连接数据库
+ exec sql   connect:userpwd;  
+ 查询数据
+ exec sql   select  字段名   into  变量名   from  表名  where 条件; 
+
+ 断开数据库连接
+ exec sql   commit  work  release;
+ exec sql   rollback work  release;  
+
+  一个c程序的开发步骤？
+  1.编写源代码
+     vi       ***.c
+  2.编译
+      gcc  -c   ***.c
+  3.链接
+      gcc        ***.o
+  4.执行
+      ./a.out
+
+  一个proc程序开发的步骤
+  1.编写源代码
+     vi     ***.pc
+  2.预编译
+     proc     ***.pc 
+  3.编译   链接
+      gcc      ***.c    -lclntsh
+      windows                        -lorasql10
+  4.执行程序
+      ./a.out
+  
+  
+使用c++方式写 proc++代码
+ 
+   proc 的预编译选项 
+   iname      输入文件名    可以省略 
+   oname     输出文件名    默认输出.c  
+   
+   parse        解析方式   默认是c的full方式
+                    partia        严格的c++方式解析  不建议使用
+                    none          c++推荐使用这种方式
+      
+   code         默认是  ansi_c  
+                    如果是c++  则需要cpp方式
+
+  proc  second.pc   oname=second.cpp   parse=partia  code=cpp  
+                      
+  如果用c++来写  proc++ 程序  则必须 把在sql语句中使用的变量
+  放入申明区 .
+  linux    unix   在写proc时可以不把 在sql语句中使用的变量放在申明
+  区单在windows 即使写proc 程序 也必须把 在sql语句中使用的变量放在申明区。
+    
+     exec sql   begin declare  section;
+             /*这是申明区*/
+     exec sql   end    declare  section;
+ 
+   在申明区中的变量 即可以在 sql语句中使用  又可以在宿主语言中
+使用   ---------------------------------宿主变量
+
+  proc 的其它预编译选项？
+  include        可以用来定位头文件的位置 
+                       stddef.h   
+  proc   ***.pc    include='/user/include/stddef.h'
+  find      搜索位置     -name   文件名    2>/dev/null
+
+  userid="用户名/密码"
+  sqlcheck=semantics 
+  这两个选项    和 proc中调用  plsql有关
+  
+                            
+ ------------------------------------------------------------------------------
+ 1.如何写一个proc程序
+    a编写源代码
+      vi    ***.pc
+
+    b预编译
+       proc    ***.pc         
+    c编译链接
+       gcc       ***.c   -lclntsh
+    d 执行
+       ./a.out
+ 2.如何写一个  proc++程序
+    a 编写源代码
+       必须把在sql语句中使用到得变量 放入申明区
+        exec sql  begin  declare section;
+                /*申明区*/                 
+        exec sql  end     declare section;           
+    b 预编译
+        oname
+        parse 
+        code
+    c  编译连接
+        g++  ***.cpp   -lclntsh
+    d  运行
+        ./a.out
+ 3.  宿主变量的特点 
+      其它的proc的预编译选项
+       include       
+       userid
+       sqlcheck
+           
+----------------------------------------------------------------------------------------------
+    宿主变量：
+    宿主变量的类型
+    char      
+    char      var_name[30]         定长字符串
+    short 
+    int   
+    long 
+    double 
+    float
+    varchar   var_name[30]        变长字符串
+
+1.    定长字符串的使用 
+
+      变长字符串的使用
+
+2.    proc的预编译选项
+       char_map=charz      定长       \0结尾        空格补齐  
+                            charf |varchar2      定长      空格补齐
+                            string      变长      \0结尾
+
+    宿主变量：即可以在sql语句中使用   又可以在宿主语言中使用的
+变量。推荐把宿主变量放入申明区。
+    使用宿主变量需要注意的问题：
+    1.强烈推荐  把宿主变量放入申明区
+    2.宿主变量可以是指针类型
+        但是  对malloc   支持的不好
+    3.ddl    中 不能有宿主变量
+     char   var_name [30]="testddl";
+     exec sql  create table :var_name (id  number);       
+
+    4.宿主变量 在sql 语句中  在变量名前推荐加上冒号
+     
+-----------------------------------------------------------------------------------------
+    指示变量：当数据库中的字段值  赋值给宿主变量时   赋值的
+    状态  可以通过指示变量  得到!
+    当指示变量的值是  0       赋值正常
+                                      -1      数据库中字段的值是null
+                                      >0    截断赋值 
+
+    指示变量必须是short类型  
+    使用的语法如下
+     short     indname;
+     short     indsalary;
+     exec sql   select   first_name,salary  into  :name indicator  :indname,:salary indicator  :indsalary  from  s_emp   where id=1;
+
+      short     indname;
+     short     indsalary;
+     exec sql   select   first_name,salary  into      :name:indname,:salary:indsalary  from  s_emp   where id=1;
+
+
+  -------------------------------------------------------------------------------
+  数组变量：
+   只能是一维数组   字符除外
+   不支持数组指针
+   最大个数  32767     
+
+    把所有的manager_id  和  first_name  分别放入两个数组中
+    并且我想知道 每个字段的赋值状态？
+    ---------  指示器变量是可以定义数组的
+
+    在select   语句中使用数组 不需要给出数组的下标。
+        
+---------------------------------------------------------------------------------------
+   sqlca  通信区
+   sqlca.sqlerrd[2]    sql语句所影响的数据行数
+   sqlca.sqlcode        sql语句所执行的状态
+    ==0    正常
+    >0        异常
+   <0         数据库错误  或者网络错误
+   sqlca.sqlerrm.sqlerrmc   sql语句出错后的错误消息 
+
+   sqlca  称之为 宿主语言和  oracle数据库之间的通信区
+   在一个事务范围内要对一条sql的执行信息  做判断  执行完sql要立即判  断否则信息会被下一条sql覆盖掉.
+   
+-----------------------------------------------------------------------------------------
+    oraca     通信区 
+   是对sqlca通信区的信息 补充
+   消耗资源比较大   所以这个通信区默认是关闭的
+   
+   当sql语句执行完毕后   我们可以通过 oraca 得到sql文本的内容
+    1.包含oraca 通信区
+       exec sql  include  oraca; 
+    2.打开oraca通信区
+       exec  oracle   option(oraca=yes);
+    3.设置sql文本保存标志位
+        oraca.orastxtf
+       0          默认的处理    不保存sql文本
+       1           当出现错误时保存sql文本
+       2           出现警告时保存  或者sql文本保存
+       3           无论什么情况 都保存sql文本
+    4.获得sql文本
+        oraca.orastxt.orastxtc
+
+-----------------------------------------------------------------------------------
+    proc  中最重要  最简单
+    
+    proc 中如何嵌入sql语句 
+    1.如何嵌入select  语句   前面加 exec sql   和 into结合
+      exec sql   select   first_name    into   :name  from  s_emp  
+             where  id=1;
+      exec sql   select  first_name,salary  into  :name,:salary   from 
+              s_emp  where id=1; 
+     2.ddl    dml     事务控制语句   在这些语句前加 exec sql 
+
+     3.proc中如何嵌入 plsql  
+        如何调用存储过程 和  函数
+        exec  sql  execute
+               begin
+                       /*在这里调用  存储过程 或者函数*/
+               end;
+        end-exec;      
+       
+        先建立一个存储过程 准备调用
+        设计一个存储过程  有两个整数 参数     
+        把两个整数参数的和  放入第二个参数中
+        
+        create   or  replace   procedure  getsum(x  in number,
+        y  in  out   number)
+        is
+        begin
+                 y:=x+y;
+        end;
+  
+
+       proc    ***.pc    sqlcheck=semantics   userid=openlab/open123
+
+
+     ----------------------------------------------------------------------------------------
+     写一个函数      有两个整数参数     函数返回两个参数中的最大值
+     写一个proc 程序 调用这个函数   要求两个参数必须是宿主变量 
+      
+
+    -----------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+       
+
+
+  
+
+
+
+      
+
+
+
+      
+
+
+
+
+
+   
+
+
+
+
+
+     

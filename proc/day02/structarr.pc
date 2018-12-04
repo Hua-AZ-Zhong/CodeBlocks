@@ -1,0 +1,30 @@
+#include <stdio.h>
+exec sql include sqlca;
+int main(){
+    exec sql  begin declare section;
+        struct emp{
+            int  id;
+            char name[30];
+            double salary; 
+        };
+        char  userpwd[30]="openlab/open123"; 
+        struct  emp  datas[40];   
+    exec sql  end   declare section;
+    exec sql  connect:userpwd;
+    exec sql  create table  testgdg(
+    id   number,name  varchar2(30),
+    salary  number);
+    exec sql  select  id,first_name,salary  
+        into  :datas from s_emp order by id;
+    int  i=0;
+    /*
+    int  loopcount=sqlca.sqlerrd[2];
+    for(i=0;i<loopcount;i++){ 
+    printf("%d:%s:%lf\n",datas[i].id,
+        datas[i].name,datas[i].salary);
+        exec sql insert into testgdg values(:datas[i]); 
+    }*/
+    exec sql  insert into testgdg values(:datas);
+    exec sql  commit work release;  
+}
+

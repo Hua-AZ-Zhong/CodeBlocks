@@ -1,0 +1,184 @@
+    proc  中如何调用函数
+
+   写一个函数      有两个整数参数     函数返回两个参数中的最大值
+   写一个proc 程序 调用这个函数   要求两个参数必须是宿主变量 
+
+    create   or  replace  function   getmax(x  number,y number)
+    return  number is
+    begin
+            if   x<y then
+                 return  y;
+            end if;
+                 return  x; 
+    end;
+-----------------------------------------------------------------------------------------------
+   数据库的访问：
+   1.本地数据库访问 
+       exec sql   connect:userpwd;
+       exec sql   connect:username  identified  by  :userpassword;
+
+      得到oracle  的实例名   echo   $ORACLE_SID
+   2.远程数据库访问
+      $ORACLE_HOME/network/admin/tnsnames.ora 
+ CAH_192.168.0.26 =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.0.26)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = tarena)
+    )
+  )
+
+     在一个数据库   要得到另一个远程数据库的数据
+          
+   create   database   link    my23link   connect to   openlab
+    identified  by   open123   using  '(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.0.23)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = tarena10g)
+    )
+  )'; 
+
+   数据库链接  连接远程数据库的特点是  必须 先登录本地数据库然后再通过链接访问远程数据库
+   
+   第二种连接远程数据库的方式：
+   不用登录一个数据库 就可以直接访问远程数据库？
+
+   using   用来区分不同的数据库
+   exec  sql   connect:userpwd using  :remotedb;  
+   exec  sql   connect:userpwd;
+   后面的操作 无法区分到底是哪个连接
+   at     关键字 可以给连接加标签
+   
+   在操作之前 加 标签
+   exec sql  at :localdblab    select first_name into  :var_name
+           from s_emp  where id=1;
+   exec sql  at :localdblab    update  first_name= :var_name
+           from s_emp  where id=1;
+   exec  sql at:localdblab     commit  work release;
+---------------------------------------------------------------------------------------
+  proc中的异常处理
+          not  found     没有发现数据
+          sqlerror           proc 中错误的统称
+  
+          exec sql  whenever  sqlerror    do   processerror();
+          exec sql  whenever  notfound  do   processnotfund();
+          exec sql  whenever  sqlerror      continue;
+          exec sql  whenever  notfound  do  break;
+   
+         在异常处理函数中   
+          exec sql  whenever  sqlerror      continue;
+         用sqlca.sqlerrm.sqlerrmc   得到错误消息
+         需要回滚事务的  要回滚事务
+         需要记录日志  或者向日志表中放入日志信息
+          
+-----------------------------------------------------------------------------------
+     数据的存取与更新操作
+     1.使用单个变量 操作 单行单列
+        exec sql  select   first_name into  :var_name  from s_emp
+     where   id=1;
+     2.使用多个变量 操作 单行多列
+         exec sql  select   first_name,salary  into  :var_name,:salary  from s_emp  where   id=1;
+     3.使用结构体 操作 单行多列
+         struct {
+                int    id;
+                char  name[30];
+                double salary; 
+         }emp;
+
+         struct  emp{
+                int    id;
+                char  name[30];
+                double salary; 
+         };
+
+        struct  emp{
+                int    id;
+                char  name[30];
+                double salary; 
+         }emp;
+
+         typedef struct  emp{
+                int    id;
+                char  name[30];
+                double salary; 
+         }emp;
+       
+       c的结构体定义 可以出现在任何位置
+       但c++的结构体定义 必须放在申明区.
+
+   4.数组 类型   操作多行多列
+     把s_emp 表中 id   first_name  salary   包装成一个结构体
+    然后定义一个结构体数组    然后 把s_emp  表中相应的数据
+    存入这个数组 中    然后输出这个数组的数据
+    最后把这个数组中的数据存入一张新建的表中。
+     
+   5.游标
+       1.非滚动游标      ------只能顺序提取数据
+          a.声明游标
+             exec   sql   declare   游标名  cursor  for  sql语句; 
+          b.打开游标
+             exec   sql    open     游标名;
+          c. 提取数据
+             exec   sql    fetch      游标名  into  结构体变量;
+          d.关闭游标   
+             exec    sql  close       游标名;      
+       2.滚动游标         -------随机取得数据
+          scroll
+         
+           last
+           first
+           prior
+           next
+           current
+           relative      相对
+           absolute    绝对
+-----------------------------------------------------------------------------------------
+   proc  中的动态sql
+   1.动态sqla
+      不能是select   语句
+      不能有占位符号 
+       exec sql  insert into test values(:b0,:b1,:b2);    
+       只适合 执行次数不多情况  
+       exec  sql  execute  immediate  :sqlstr;
+   2.动态sqlb
+      可以有占位符号  ------适合批量数据的处理
+       exec  sql  prepare abc from  :sqlstr;
+       exec sql   execute  abc  using  :id,:name;
+   3.动态sqlc 
+       只能是select  
+        可以有占位符
+        ----------------------动态sqlb  和  游标的结合
+             
+       exec sql    prepare  s   from  :sqlstr;
+       exec sql    declare   empscursor  cursor for  s;
+       exec sql    open       empscursor  using  :id;
+       exec  sql   fetch        empscursor  into :emp;
+       exec sql    close        empscursor;
+
+
+
+
+
+    
+            
+       
+
+
+
+ 
+         
+
+
+
+
+
+
+    
+
+ 
