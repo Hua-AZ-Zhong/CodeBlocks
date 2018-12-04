@@ -20,10 +20,6 @@ int swap(int a, int b)
 		printf("swap error, nReturnCode = [%d]\n", nReturnCode);
 	}
 	return -2;
-	if (nReturnCode)
-	{
-		printf("swap error twice, nReturnCode = [%d]\n", nReturnCode);
-	}
 }
 
 int print()
@@ -36,10 +32,6 @@ int print()
 		printf("print error, nReturnCode = [%d]\n", nReturnCode);
 	}
 	return nReturnCode;
-	if (nReturnCode)
-	{
-		printf("print error twice, nReturnCode = [%d]\n", nReturnCode);
-	}
 }
 
 int main()
@@ -51,7 +43,6 @@ int main()
 	{
 		printf("main error, nReturnCode = [%d]\n", nReturnCode);
 		return nReturnCode;
-		printf("main error twice, nReturnCode = [%d]\n", nReturnCode);
 	}
 	printf("This Step !");
 }
