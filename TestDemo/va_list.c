@@ -7,14 +7,17 @@ int OTraceDebug(const char *va_alist, ...) {
     char* format;
 
     va_start(args,va_alist);
+#if 0
     format = va_arg(args, char* );
     vsprintf(msg2file, format, args);
     printf("format is [%s]\n", format);
-    printf("msg2file is [%s]\n", msg2file);
+#endif
+    vsprintf(msg2file, va_alist, args);
+    printf("msg2file is: %s", msg2file);
 }
 
 int main() {
     char *name = "zhonghua";
     int age = 30;
-    OTraceDebug("hello world! name is %s, age is %d\n", name, age);
+    OTraceDebug("hello world! name is %s,\n\t age is %d\n", name, age);
 }
