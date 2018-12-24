@@ -32,8 +32,8 @@ void GetTimeSys(char *str)
     Clock=(time_t)time((time_t *)0);
     tmnow=(struct tm *)localtime(&Clock);
                                             
-    sprintf(strtime, "%02d:%02d:%02d] ", tmnow->tm_hour, tmnow->tm_min, tmnow->tm_sec);
     sprintf(str, "[%04d%02d%02d ", tmnow->tm_year+1900, tmnow->tm_mon+1, tmnow->tm_mday);
+    sprintf(strtime, "%02d:%02d:%02d]", tmnow->tm_hour, tmnow->tm_min, tmnow->tm_sec);
                                                     
     strcat(str,strtime);
 }
@@ -47,6 +47,7 @@ int OTraceDebug(const char *va_alist, ...)
     char timeBuffer[100];
     GetTimeSys(timeBuffer);
     strcat(msg2file, timeBuffer);
+    sprintf(msg2file + strlen(msg2file), "[PID:%10d] ", getpid());
 
     sprintf(logPath, "%s/%s", getenv("PWD"), "POMP.log");
 
