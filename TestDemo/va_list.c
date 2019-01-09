@@ -6,18 +6,29 @@
 #include <stdlib.h>  /** for getenv() **/
 
 int OTraceDebug(const char *va_alist, ...);
+FILE *fp = NULL;
 
 int main()
 {
     char *name = "zhonghua";
     int age = 30;
-    int count = 5;
+    int count = 60;
+
+    char logPath[100] = "";
+    sprintf(logPath, "%s/%s", getenv("PWD"), "POMP.log");
+    if((fp = fopen(logPath,"a+")) == NULL)
+    {
+        printf("Open log file failed!\n");
+    }
+
     while (count)
     {
         OTraceDebug("hello world! name is %s, age is %d\n", name, age);
         count--;
         sleep(1);
     }
+    
+    fclose(fp);
 }
 
 void GetTimeSys(char *str)
@@ -41,7 +52,6 @@ void GetTimeSys(char *str)
 int OTraceDebug(const char *va_alist, ...)
 {
     char msg2file[10000] = "";
-    char logPath[100] = "";
     va_list args;
     char* format;
     char timeBuffer[100];
@@ -49,7 +59,6 @@ int OTraceDebug(const char *va_alist, ...)
     strcat(msg2file, timeBuffer);
     sprintf(msg2file + strlen(msg2file), "[PID:%10d] ", getpid());
 
-    sprintf(logPath, "%s/%s", getenv("PWD"), "POMP.log");
 
     va_start(args, va_alist);
 #if 0
@@ -59,11 +68,6 @@ int OTraceDebug(const char *va_alist, ...)
     printf("msg2file is: %s", msg2file);
 #endif
     vsprintf(msg2file + strlen(msg2file), va_alist, args);
-    FILE *fp = NULL;
-    if((fp = fopen(logPath,"a+")) == NULL)
-    {
-        printf("Open log file failed!\n");
-    }
     fprintf(fp, "%s", msg2file);
-    fclose(fp);
+    fflush(fp);
 }

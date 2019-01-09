@@ -31,7 +31,7 @@ void* writeLog(void *arg)
 	   printf("File pointer null \n");
 
    //joyce:can use fwrite,fprint, whichever you prefer
-   fwrite(str , 1 , sizeof(str) , fp );
+   fwrite(str , 1 , strlen(str) , fp );
    fflush(fp); //i want to see the output right away :-)
 
    printf("\nProc3 PID[%d]-Write Job %d finished\n",getpid(),counter);
