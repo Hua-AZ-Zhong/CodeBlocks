@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>  /** for sleep() **/
 #include <stdlib.h>  /** for getenv() **/
+#include <sys/timeb.h>  /** for ftime() **/
 
 int OTraceDebug(const char *va_alist, ...);
 FILE *fp = NULL;
@@ -43,7 +44,7 @@ void GetTimeSys(char *str)
     Clock=(time_t)time((time_t *)0);
     tmnow=(struct tm *)localtime(&Clock);
                                             
-    sprintf(str, "[%04d%02d%02d ", tmnow->tm_year+1900, tmnow->tm_mon+1, tmnow->tm_mday);
+    sprintf(str, "[%04d-%02d-%02d ", tmnow->tm_year+1900, tmnow->tm_mon+1, tmnow->tm_mday);
     sprintf(strtime, "%02d:%02d:%02d]", tmnow->tm_hour, tmnow->tm_min, tmnow->tm_sec);
                                                     
     strcat(str,strtime);
