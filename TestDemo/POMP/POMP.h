@@ -13,4 +13,4 @@ struct POMP {
     char ReturnMsg[1001];
     char SucFlag[2];
     char costtime[7];
-}
+};
