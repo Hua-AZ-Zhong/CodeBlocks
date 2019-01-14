@@ -50,16 +50,36 @@ void GetTimeSys(char *str)
 
 int getSTAN()
 {
-    srand((unsigned)time(NULL));        /** 调用srand()函数设置随机数种子，种子加入时间 **/
+    //srand((unsigned)time(NULL));        /** 调用srand()函数设置随机数种子，种子加入时间 **/
+    srand((unsigned)time(NULL) * getpid());        /** 调用srand()函数设置随机数种子，种子加入时间 **/
     return rand()%1000000;         /** 调用rand()函数产生一个随机数，除以100万取模，得到六位随机流水号 **/
 }
-void setData(struct POMP *pm)
+
+void getCostTime(char *costTime)
+{
+    struct timeb Ti, To;
+    long ms=0;
+
+    ftime(&Ti);
+
+    srand((unsigned)time(NULL));
+    while(rand()%1000000 != 999999)
+    {
+        ;
+    }
+
+    ftime(&To);
+    ms = (To.time * 1000 + To.millitm)  - (Ti.time * 1000 + Ti.millitm);
+    sprintf(costTime, "%ld", ms);
+} 
+
+void setData(struct POMP *pm, char *Module)
 {
     pm->TranId = getSTAN();
     sprintf(pm->TerId, "%s", "12345678");
     sprintf(pm->CardId, "%s", "6227611399999999");
     sprintf(pm->ProName, "%s", "IST");
-    sprintf(pm->ModName, "%s", "ZPC");
+    sprintf(pm->ModName, "%s", Module);
     sprintf(pm->NodeId, "%s", "01");
     sprintf(pm->TxnID, "%s", "03");
     sprintf(pm->TimeType, "%s", "01");
@@ -68,7 +88,7 @@ void setData(struct POMP *pm)
     sprintf(pm->ReturnCode, "%s", "14");
     //sprintf(pm->ReturnMsg, "|");
     sprintf(pm->SucFlag, "A");
-    sprintf(pm->costtime, "%s", "1024");
+    getCostTime(pm->costtime);
 }
 
 int OTraceDebug(FILE *fp, struct POMP *pm, int flashFlag)

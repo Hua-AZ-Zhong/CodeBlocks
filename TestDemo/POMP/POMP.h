@@ -21,4 +21,5 @@ int OTraceDebug(FILE *fp, struct POMP *pm, int flashFlag);
 void GetTimeSys(char *str);
 void GetSysDate(char *sysDate);
 void GetTimeStamp(char *timeStamp);
-void setData(struct POMP *pm);
+void getCostTime(char *costTime);
+void setData(struct POMP *pm, char *Module);

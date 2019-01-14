@@ -39,8 +39,9 @@ int main()
     while (count)
     {
         GetSysDate(curDate);
-        if(memcmp(curDate,initDate,10)>0)
+        if(memcmp(curDate,initDate,8)!=0)
         {
+            printf("new date [%s]!\n", curDate);
             tmp = fp;
             sprintf(logPath, "%s/IST_TO_POMP.%s.debug", getenv("PWD"), curDate);
             if((fp = fopen(logPath,"a+")) == NULL)
@@ -51,10 +52,11 @@ int main()
             else
             {
                 printf("Open new log file [%s]!\n", logPath);
+                fclose(tmp);
+                memcpy(initDate,curDate,8);
             }
-            fclose(tmp);
         }
-        setData(pm);
+        setData(pm, "ZPC");
         OTraceDebug(fp, pm, 1);
         //count--;
         sleep(1);
