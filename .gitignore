@@ -8,3 +8,4 @@ a.out
 *.swp
 .DS_Store
 *.class
+*.out
