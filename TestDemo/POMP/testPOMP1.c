@@ -12,7 +12,7 @@ FILE *tmp = NULL;
 struct POMP pomp;
 struct POMP *pm = &pomp;
 
-int main()
+int main(int argc, char **argv)
 {
     int count = 5;
     char initDate[9]={0};
@@ -56,7 +56,14 @@ int main()
                 memcpy(initDate,curDate,8);
             }
         }
-        setData(pm, "ZPC");
+        setData(pm, argv[0], "01");
+        OTraceDebug(fp, pm, 0);
+        srand((unsigned)time(NULL));
+        while(rand()%1000000 != 909)
+        {
+            ;
+        }
+        setData(pm, argv[0], "02");
         OTraceDebug(fp, pm, 1);
         //count--;
         sleep(1);

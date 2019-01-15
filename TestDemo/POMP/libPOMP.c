@@ -73,16 +73,28 @@ void getCostTime(char *costTime)
     sprintf(costTime, "%ld", ms);
 } 
 
-void setData(struct POMP *pm, char *Module)
+void getModuleName(char *mainArgv, char *moduleName)
+{
+    if(memcmp(mainArgv,"zplite8583C",11)==0)
+        sprintf(moduleName,"%s","ZPC");
+    else if(memcmp(mainArgv,"zplite8583A",11)==0)
+        sprintf(moduleName,"%s","ZPA");
+    else if(memcmp(mainArgv,"zplite8583E",11)==0)
+        sprintf(moduleName,"%s","ZPE");
+    else
+        sprintf(moduleName,"%s","NULL");
+}
+
+void setData(struct POMP *pm, char *mainArgv, char *timeType)
 {
     pm->TranId = getSTAN();
     sprintf(pm->TerId, "%s", "12345678");
     sprintf(pm->CardId, "%s", "6227611399999999");
     sprintf(pm->ProName, "%s", "IST");
-    sprintf(pm->ModName, "%s", Module);
+    getModuleName(mainArgv, pm->ModName);
     sprintf(pm->NodeId, "%s", "01");
     sprintf(pm->TxnID, "%s", "03");
-    sprintf(pm->TimeType, "%s", "01");
+    sprintf(pm->TimeType, "%s", timeType);
     GetTimeStamp(pm->TxnDateTime);
     sprintf(pm->LinkSysName, "%s", "ZPA");
     sprintf(pm->ReturnCode, "%s", "14");

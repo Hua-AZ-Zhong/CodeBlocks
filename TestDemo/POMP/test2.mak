@@ -2,9 +2,9 @@ CXX = gcc
 ECHO = @echo
 RM = rm -f
 
-EXEC = testPOMP
+EXEC = zplite8583A0
 OBJS = \
-	testPOMP.o
+	testPOMP2.o
 
 $(EXEC) : $(OBJS)
 	$(ECHO) "Linking EXE  [$(EXEC)] ..."

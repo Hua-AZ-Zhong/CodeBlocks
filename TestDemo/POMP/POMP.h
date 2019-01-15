@@ -22,4 +22,5 @@ void GetTimeSys(char *str);
 void GetSysDate(char *sysDate);
 void GetTimeStamp(char *timeStamp);
 void getCostTime(char *costTime);
-void setData(struct POMP *pm, char *Module);
+void getModuleName(char *mainArgv, char *moduleName);
+void setData(struct POMP *pm, char *mainArgv, char *timeType);
