@@ -20,12 +20,10 @@ void GetSysDate(char *SysDate)
 void GetTimeStamp(char *timeStamp)
 {
     struct tm *tmnow;
-    time_t Clock;
     struct timeb Tp;
 
     ftime(&Tp);
-    Clock=(time_t)time((time_t *)0);
-    tmnow=(struct tm *)localtime(&Clock);
+    tmnow=(struct tm *)localtime(&Tp.time);
                                             
     sprintf(timeStamp, "%04d-%02d-%02d", tmnow->tm_year+1900, tmnow->tm_mon+1, tmnow->tm_mday);
     sprintf(timeStamp + 10, " %02d:%02d:%02d.%03d", tmnow->tm_hour, tmnow->tm_min, tmnow->tm_sec, Tp.millitm);

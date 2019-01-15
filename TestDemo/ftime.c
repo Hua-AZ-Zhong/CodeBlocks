@@ -24,5 +24,12 @@ int main()
     system("sleep 1");
     ftime(&Tp);
     printf("The time 2 is %ld.%d\n",Tp.time,Tp.millitm);
+
+    ftime(&Tp);
+    printf("Tp's second is [%ld], time()'s return value is [%ld]\n", Tp.time, time(0));
+    struct tm *tmnow;
+    tmnow=(struct tm *)localtime(&Tp.time);
+    printf("[%04d-%02d-%02d %02d:%02d:%02d]\n", tmnow->tm_year+1900, tmnow->tm_mon+1, tmnow->tm_mday, tmnow->tm_hour, tmnow->tm_min, tmnow->tm_sec);
+    system("date");
     return 0;
 }
