@@ -1,4 +1,4 @@
-CXX = gcc
+﻿CXX = gcc
 ECHO = @echo
 RM = rm -f
 

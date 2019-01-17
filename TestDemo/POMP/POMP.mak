@@ -1,4 +1,4 @@
-CXX = gcc 
+﻿CXX = gcc 
 ECHO = @echo
 DLINK = ld
 DLFIX = .so 
