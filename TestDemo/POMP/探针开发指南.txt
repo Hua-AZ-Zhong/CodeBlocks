@@ -27,3 +27,4 @@ B程序第二次打印，刷新
 
 待解决场景
 使用ftime()转换成localtime
+经过尝试，先使用ftime获取timeb结构体中的time和millitm，然后调用localtime将结构体成员time转换成tm结构体
