@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-TermBanks(char *buf, int length)
+void TermBanks(char *buf, int length)
 {
     int  i, j;
     char mybuf[1024];
