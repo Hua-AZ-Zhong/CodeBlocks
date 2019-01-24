@@ -5,13 +5,8 @@
 #include <stdlib.h>  /** for getenv() **/
 #include <sys/timeb.h>  /** for ftime() **/
 
-#ifndef POMP_H
-#define POMP_H
-#endif
-
-#ifndef POMP_STRUCT_H
-#define POMP_STRUCT_H
-#endif
+#include "POMP_Struct.h"
+#include "POMP.h"
 
 void GetSysDate(char *SysDate)
 {

@@ -5,6 +5,7 @@
 #include <unistd.h>  /** for sleep() **/
 #include <stdlib.h>  /** for getenv() **/
 #include <sys/timeb.h>  /** for ftime() **/
+#include "POMP_Struct.h"
 #include "POMP.h"
 
 FILE *fp = NULL;

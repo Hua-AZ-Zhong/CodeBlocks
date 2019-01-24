@@ -1,7 +1,4 @@
 // Function Declaration
-#ifndef POMP_STRUCT_H
-#define POMP_STRUCT_H
-#endif
 int OTraceDebug(FILE *fp, struct POMP *pm, int flashFlag);
 void GetTimeSys(char *str);
 void GetSysDate(char *sysDate);
