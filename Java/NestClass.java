@@ -1,5 +1,5 @@
 class Outer { // 定义一个外部类
-    private String msg = "Hello World!" ;
+    private String msg = "Hello World!";
     class Inner { // 定义一个内部类
         public void print() {
             //System.out.println(msg);   等同于下一句带this的输出
