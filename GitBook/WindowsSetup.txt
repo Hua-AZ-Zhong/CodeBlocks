@@ -1,0 +1,9 @@
+1、安装Node.js  例如node-v10.13.0-x64
+2、进入CMD
+    执行npm install -g gitbook-cli
+3、进入文档目录，初始化或者直接启动service
+    E:
+    cd E:\IST Document\ISTBook
+    gitbook serve
+    pause
+    (第三部分的命令可以集成到一个BAT文件中)
