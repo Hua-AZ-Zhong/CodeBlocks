@@ -11,18 +11,10 @@ void getTimeStamp(char *timeStamp)
     struct timeb Tp;
 
     ftime(&Tp);
-    printf("Tp's second is [%ld], time()'s return value is [%ld]\n", Tp.time, time(0));
+    //printf("Tp's second is [%ld], time()'s return value is [%ld]\n", Tp.time, time(0));
 
     tmnow=(struct tm *)localtime(&Tp.time);
     sprintf(timeStamp, "%04d-%02d-%02d %02d:%02d:%02d.%03d", tmnow->tm_year+1900, tmnow->tm_mon+1, tmnow->tm_mday, tmnow->tm_hour, tmnow->tm_min, tmnow->tm_sec, Tp.millitm);
     printf("%s\n", timeStamp);
     system("date");
-}
-
-int main()
-{
-    char timeStampBuffer[26] = { 0 };
-    getTimeStamp(timeStampBuffer);
-    printf("%s\n", timeStampBuffer);
-    return 0;
 }
