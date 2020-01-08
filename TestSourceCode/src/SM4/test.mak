@@ -8,7 +8,7 @@ OBJS = \
 
 $(EXEC) : $(OBJS)
 	$(ECHO) "Linking EXE  [$(EXEC)] ..."
-	@$(CXX) -o $(EXEC) $(OBJS) -lSM4
+	@$(CXX) -o $(EXEC) $(OBJS) -lSM4 -L.
 
 .c.o:
 	$(ECHO) "Compiling [$@] ..."

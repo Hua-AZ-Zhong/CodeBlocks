@@ -5,7 +5,7 @@ MACOS="Darwin"
 LINUX="Linux"
 HP-UX="HP-UX"
 
-if [ $(ARCH) = $(LINUX) ]; \
+#if [ $(ARCH) = $(LINUX) ]; \
 	then \
 		echo $(ARCH); \
 elif [ $(ARCH) = $(HP-UX) ]; \
@@ -26,12 +26,12 @@ OBJS = \
 	commonTools.o
 
 .cpp.o:
-	$(ECHO) "Compiling C [$@] ..."
+	$(ECHO) "Compiling C++ [$@] ..."
 	$(CC) -o $@
 
 .c.o:
-	$(ECHO) "Compiling C [$@] ..."
-	$(CC) -o $@
+	$(ECHO) "Compiling [$@] ..."
+	$(CC) -c $<
 
 $(EXEC):$(OBJS)
 	$(CC) -o $(EXEC) $(OBJS)
