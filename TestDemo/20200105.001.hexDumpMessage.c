@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void dumpMessage(char *message, int len)
+void dumpMessage(unsigned char *message, int len)
 {
     for(int i = 0; i < len; i++)
     {
@@ -24,9 +24,9 @@ int main(int argc, char **argv)
         printf("    argv[0] + space + your message\n");
         return -1;
     }
-    char buffer[1024] = {0};
+    unsigned char buffer[1024] = {0};
     int dataLen = strlen(argv[1]);
-    char *bp = buffer;
+    unsigned char *bp = buffer;
 
     memcpy(buffer, argv[1], dataLen);
     int count = 1;
