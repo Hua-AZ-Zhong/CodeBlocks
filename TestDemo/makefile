@@ -18,23 +18,10 @@ else \
 		echo "ARCH unknow"; \
 fi
 
-CC = cc
-ECHO = echo
-EXEC = testBin
-OBJS = \
-	main.o \
-	commonTools.o
-
-.cpp.o:
-	$(ECHO) "Compiling C++ [$@] ..."
-	$(CC) -o $@
-
-.c.o:
-	$(ECHO) "Compiling [$@] ..."
-	$(CC) -c $<
-
-$(EXEC):$(OBJS)
-	$(CC) -o $(EXEC) $(OBJS)
+all:
+	make -f libCommonTools.mak
+	make -f testBin.mak
 
 clean:
-	rm -f $(OBJS)
+	make -f libCommonTools.mak $@
+	make -f testBin.mak $@
