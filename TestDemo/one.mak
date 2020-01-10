@@ -14,13 +14,8 @@ OBJS = \
 	main.o
 
 
-all: $(LIBS) $(EXEC)
-	echo all
+all: $(DLTARG) $(EXEC)
 obj: $(LIBOBJS) $(OBJS)
-	echo obj
-LIBS: obj
-	$(ECHO) "Linking Shared Library [$(DLTARG)] ..."
-	$(CC) -shared -o $(DLTARG) $(LIBOBJS)
 
 $(DLTARG):$(LIBOBJS)
 	$(ECHO) "Linking Shared Library [$(DLTARG)] ..."
