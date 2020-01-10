@@ -11,3 +11,7 @@ a.out
 *.out
 testBin
 test
+*.debug
+*.DEBUG
+*.log
+*.LOG
