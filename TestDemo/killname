@@ -1,0 +1,6 @@
+list=`ps -ef | grep $1 |grep -vE "grep|ksh"| awk '{print $2}'`
+
+for i in $list
+do
+echo $i | xargs kill -9 >/dev/null 2>&1
+done
