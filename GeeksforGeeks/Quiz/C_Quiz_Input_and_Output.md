@@ -21,7 +21,8 @@ int main()
 2、Predict output of the following program
 
 ```C
-#include <stdio.h> int main()
+#include <stdio.h>
+int main()
 {
     printf("\\new_c_question\\by");
     printf("\\rgeeksforgeeks");
@@ -76,3 +77,21 @@ int main()
     return 0;
 }
 ```
+
+>1、Predict the output of following program?
+>>
+>>```C
+>>#include "stdio.h"
+>>int main()
+>>{
+>>    char arr[100];
+>>    printf("%d", scanf("%s", arr));
+>>    /* Suppose that input value given for above scanf is "GeeksQuiz" */
+>>    return 1;
+>>}
+>>```
+>>>
+>>>* A、9
+>>>* B、1
+>>>* C、10
+>>>* D、100
