@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+exec sql include sqlca;
+
+int main()
+{
+    char F43[41] = {0};
+    memcpy(F43, "中国银联CHINA UNIONPAY SIMULATOR       ", 39);
+    F43[39] = 0xD6;
+
+    exec sql begin declare section;
+        char  userpwd[30] = "bocswt75/bocswt75";
+        int number = 0;
+        char acceptornameNew[41] = {0};
+        char acceptornameNew1[41] = {0};
+    exec sql end declare section;
+
+    exec sql connect:userpwd;
+
+    exec sql select acceptorname into :acceptornameNew from shclog where origtrace=7070 and cap_date=to_date('20200317','YYYMMDD');
+    exec sql select count(*) into :number from shclog where origtrace=7070 and cap_date=to_date('20200317','YYYMMDD');
+    printf("Acceptorname is [%s]\n", acceptornameNew);
+    printf("number is [%d]\n", number);
+    printf("F43 is [%s]\n", F43);
+    exec sql update shclog set acceptorname=:F43 where origtrace=7070 and cap_date=to_date('20200317','YYYMMDD');
+    exec sql select acceptorname into :acceptornameNew from shclog where origtrace=7070 and cap_date=to_date('20200317','YYYMMDD');
+    printf("Acceptorname is [%s]\n", acceptornameNew);
+
+    exec sql commit work release;
+}
