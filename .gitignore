@@ -260,3 +260,6 @@ paket-files/
 .fake/
 
 .DS_Store
+
+#Python
+__pycache__
