@@ -1,20 +1,58 @@
 import binascii
 import struct
-from enum import Enum
+from enum import IntEnum
 import logging
 
 # Data Type enumeration
-class DT(Enum):
+class DT(IntEnum):
     BCD     = 1
     ASCII   = 2
     BIN     = 3
 
 # Length Type enumeration
-class LT(Enum):
+class LT(IntEnum):
     FIXED   = 0
     LVAR    = 1
     LLVAR   = 2
     LLLVAR  = 3
+
+class MsgVersion(IntEnum):
+    ISO1987  = 0
+    ISO1993  = 1
+    ISO2003  = 2
+    National = 8
+    Private  = 9
+
+class MsgClass(IntEnum):
+    Authorization     = 1
+    Financial         = 2
+    FileAction        = 3
+    Reversal          = 4
+    Reconciliation    = 5
+    Administrative    = 6
+    FeeCollection     = 7
+    NetworkManagement = 8
+    Reserved          = 9
+
+class MsgFunction(IntEnum):
+    Request         = 0
+    RequestResponse = 1
+    Advice          = 2
+    AdviceResponse  = 3
+    Notification    = 4
+    NotificationAck = 5
+    Instruction     = 6
+    InstructionAck  = 7
+
+class MsgOrigin(IntEnum):
+    Acquirer       = 0
+    AcquirerRepeat = 1
+    Issuer         = 2
+    IssuerRepeat   = 3
+    Other          = 4
+    OtherRepeat    = 5
+
+
 
 log = logging.getLogger('py8583')
 
@@ -350,6 +388,16 @@ class Iso8583:
             LenDataType = self.__IsoSpec.LengthDataType(field)
             
             data = "{0}".format(self.__FieldData[field])
+
+            if(ContentType == 'z' and DataType == DT.BIN):
+                if(len(data) % 2 == 1):
+                    data = data + 'F'
+
+                data = data.replace("=", "D")
+                    
+
+
+
             Len = len(data)
             if(DataType == DT.BIN):
                 Len //=2
@@ -373,11 +421,6 @@ class Iso8583:
             elif(LenDataType == DT.BIN):
                 self.__iso += binascii.unhexlify(LenData)
             
-            
-        if(ContentType == 'z'):
-            data = data.replace("=", "D")
-            if(len(data) % 2 == 1):
-                data = data + 'F'
         
         if(DataType == DT.ASCII):
             self.__iso += data.encode('latin')
@@ -394,13 +437,14 @@ class Iso8583:
         
         for field in sorted(self.__Bitmap):
             if(field != 1 and self.Field(field) == 1):
-                self.BuildField(field)
+                try:
+                    self.BuildField(field)
+                except Exception as ex:
+                    raise type(ex)('Error building F{}: '.format(field) + repr(ex)) from None
+
                 
         return self.__iso
     
-    
-    
-
         
     def Field(self, field, Value = None):
         if(Value == None):
@@ -424,8 +468,10 @@ class Iso8583:
             if(len(str(Value)) > self.__IsoSpec.MaxLength(field)):
                 raise ValueError('Value length larger than field maximum ({0})'.format(self.__IsoSpec.MaxLength(field)))
             
-            self.__FieldData[field] = Value 
-            
+            self.__FieldData[field] = Value
+
+    def Fields(self):
+        return self.__FieldData
             
     def Bitmap(self):
         return self.__Bitmap
@@ -434,19 +480,41 @@ class Iso8583:
         if(MTI == None):
             return self.__MTI
         else:
-            try: # MTI should only contain numbers
-                int(MTI)
-            except:
-                raise ValueError("Invalid MTI [{0}]: MTI must contain only numbers".format(MTI))
-        
-            if(self.strict == True):
-                if(MTI[1] == '0'):
-                    raise ValueError("Invalid MTI [{0}]: Invalid Message type".format(MTI))
-                      
-                if(int(MTI[3]) > 5):
-                    raise ValueError("Invalid MTI [{0}]: Invalid Message origin".format(MTI))
+            MTI = MTI.zfill(4)
             
+            if int(MTI[0]) not in list(map(int, MsgVersion)):
+                raise ValueError("Invalid MTI [{0}]: Invalid message version".format(MTI))
+
+            if int(MTI[1]) not in list(map(int, MsgClass)):
+                raise ValueError("Invalid MTI [{0}]: Invalid message class".format(MTI))
+
+            if int(MTI[2]) not in list(map(int, MsgFunction)):
+                raise ValueError("Invalid MTI [{0}]: Invalid message class".format(MTI))
+
+            if int(MTI[3]) not in list(map(int, MsgOrigin)):
+                raise ValueError("Invalid MTI [{0}]: Invalid message class".format(MTI))
+
             self.__MTI = MTI
+
+    def Version(self):
+        for i in MsgVersion:
+            if int(self.__MTI[0]) == i.value:
+                return i
+
+    def Class(self):
+        for i in MsgClass:
+            if int(self.__MTI[1]) == i.value:
+                return i
+
+    def Function(self):
+        for i in MsgFunction:
+            if int(self.__MTI[2]) == i.value:
+                return i
+
+    def Origin(self):
+        for i in MsgOrigin:
+            if int(self.__MTI[3]) == i.value:
+                return i
 
 
     def Description(self, field, Description = None):
