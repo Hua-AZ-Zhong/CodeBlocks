@@ -1,4 +1,5 @@
 # query.py
+# Reference to URL https://cx-oracle.readthedocs.io/en/latest/user_guide/introduction.html
 
 import cx_Oracle
 
