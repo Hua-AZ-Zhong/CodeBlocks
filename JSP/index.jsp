@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" import="java.net.InetAddress"
     pageEncoding="utf-8" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.text.SimpleDateFormat"%>
 <html>
     <head>
         <title>JSP DEMO</title>
@@ -22,6 +23,12 @@
             out.println("<br/>"); //换行符 
             out.println("主机名："+addr.getHostName()); 
         %>
+        <%out.println("<br/>"); //换行符 %>
+        <%
+            SimpleDateFormat sim=new SimpleDateFormat("yyyy年MM月dd日 a hh点mm分ss秒");
+            String newTime = sim.format(new Date());
+        %>
+        <%out.println("现在是: " + newTime);%>
         <%! // 方法区
 	    // 获取访问者IP地址
             public String getIpAddr(HttpServletRequest request) {
